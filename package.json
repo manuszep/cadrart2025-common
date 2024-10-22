@@ -1,0 +1,21 @@
+{
+  "name": "cadrart2025-common",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Emmanuel Szep <manuszep@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/common": "^10.4.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}
