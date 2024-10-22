@@ -9,7 +9,7 @@
     "url": "https://github.com/manuszep/cadrart2025-common.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/manuszep"
   },
   "files": [
     "/dist"
