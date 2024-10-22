@@ -4,6 +4,10 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manuszep/cadrart2025-common.git"
+  },
   "files": [
     "/dist"
   ],
