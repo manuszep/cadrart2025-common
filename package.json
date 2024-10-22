@@ -1,5 +1,5 @@
 {
-  "name": "cadrart2025-common",
+  "name": "@manuszep/cadrart2025-common",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
