@@ -1,0 +1,62 @@
+name: Create release
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build:
+    name: Build and push NPM package to github npm
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Tags
+        id: tag
+        uses: ildug/get-tag-action@v1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.x"
+          registry-url: "https://npm.pkg.github.com"
+
+      - name: Install dependencies and build
+        run: npm ci && npm run build
+
+      - name: Git configuration
+        run: |
+          git config --global user.email "manuszep@gmail.com"
+          git config --global user.name "Emmanuel Szep"
+
+      - name: Publish package on NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+# jobs:
+#   deploy:
+#     name: build & push image to docker hub
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#         with:
+#           ref: ${{ github.event.release.tag_name }}
+#       - name: setup docker buildx
+#         uses: docker/setup-buildx-action@v2
+#       - name: Login to DockerHub
+#         uses: docker/login-action@v2
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+#       - name: build and push
+#         id: build-push-api
+#         uses: docker/build-push-action@v3
+#         with:
+#           context: .
+#           file: Dockerfile
+#           push: true
+#           tags: manuszep/cadrart2025-backend:<image-tag>
