@@ -25,3 +25,7 @@ data:
 
 Do not commit this file !
 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
+
+## Create KUBERNETES_SECRET
+
+https://andrekoenig.de/articles/kubernetes-deployment-using-github-actions
