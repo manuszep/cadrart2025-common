@@ -6,7 +6,8 @@ metadata:
 data:
   DATABASE_TYPE: mysql
   DATABASE_HOST: db
-  DATABASE_PORT: '3306'
+  DATABASE_PORT: "3306"
   DATABASE_DATABASE: atelier-cadrart
   ENVIRONMENT: PROD
   ENV: PROD
+  STATIC_ROOT: /var/www/static
