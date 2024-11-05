@@ -1,6 +1,6 @@
-import { HttpStatus } from '@nestjs/common';
+import { HttpStatus } from "@nestjs/common";
 
-import { ICadrartApiEntity } from './entity';
+import { ICadrartApiEntity } from "./entity";
 
 export type ICadrartResponse = {
   statusCode: HttpStatus;
@@ -16,6 +16,20 @@ export type ICadrartEntitiesResponse<T> = {
   entities: T[];
   total: number;
 };
+
+export interface ICadrartFileResponse {
+  statusCode: number;
+  file: string;
+}
+
+export interface ICadrartErrorResponse<TError extends Record<string, any>> {
+  statusCode: HttpStatus;
+  errors: Array<
+    {
+      message: string;
+    } & TError
+  >;
+}
 
 export type ICadrartListOption = {
   label: string;

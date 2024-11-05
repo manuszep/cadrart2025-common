@@ -1,6 +1,6 @@
 {
   "name": "@manuszep/cadrart2025-common",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,7 +16,8 @@
     "/dist"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start": "tsc -w"
   },
   "author": "Emmanuel Szep <manuszep@gmail.com>",
   "license": "ISC",
