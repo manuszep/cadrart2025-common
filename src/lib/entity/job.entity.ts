@@ -1,18 +1,18 @@
-import { ICadrartLocation } from './location.entity';
-import { ICadrartTask } from './task.entity';
-import { ICadrartOffer } from './offer.entity';
-import { ICadrartApiEntity } from './base.entity';
+import { ICadrartLocation } from "./location.entity";
+import { ICadrartTask, ICadrartTaskLax } from "./task.entity";
+import { ICadrartOffer } from "./offer.entity";
+import { ICadrartApiEntity } from "./base.entity";
 
 export enum ECadrartJobOrientation {
   VERTICAL,
-  HORIZONTAL
+  HORIZONTAL,
 }
 
 export enum ECadrartJobMeasureType {
   MEASURE_GLASS,
   MEASURE_EXTERIOR,
   MEASURE_APPROX,
-  MEASURE_OPENING
+  MEASURE_OPENING,
 }
 
 export interface ICadrartJob extends ICadrartApiEntity {
@@ -36,3 +36,7 @@ export interface ICadrartJob extends ICadrartApiEntity {
   totalBeforeReduction: number;
   totalWithVat: number;
 }
+
+export type ICadrartJobLax = Partial<ICadrartJob> & {
+  tasks?: ICadrartTaskLax[];
+};

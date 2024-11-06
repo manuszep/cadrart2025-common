@@ -1,6 +1,6 @@
-import { ICadrartArticle } from './article.entity';
-import { ICadrartApiEntity } from './base.entity';
-import { ICadrartJob } from './job.entity';
+import { ICadrartArticle } from "./article.entity";
+import { ICadrartApiEntity } from "./base.entity";
+import { ICadrartJob } from "./job.entity";
 
 export interface ICadrartTask extends ICadrartApiEntity {
   job: ICadrartJob;
@@ -14,3 +14,8 @@ export interface ICadrartTask extends ICadrartApiEntity {
   parent?: ICadrartTask;
   doneCount: number;
 }
+
+export type ICadrartTaskLax = Partial<ICadrartTask> & {
+  children?: ICadrartTaskLax[];
+  parent?: ICadrartTaskLax;
+};
