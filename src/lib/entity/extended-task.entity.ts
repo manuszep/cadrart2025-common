@@ -1,11 +1,11 @@
-import { ICadrartApiEntity } from './base.entity';
+import { ICadrartApiEntity } from "./base.entity";
 
 export interface ICadrartExtendedTask extends ICadrartApiEntity {
   taskComment: string;
   taskTotal: number;
   taskImage: string;
   taskDoneCount: number;
-  taskParentId: number;
+  parent: number | ICadrartExtendedTask;
   jobId: number;
   jobCount: number;
   jobOrientation: number;
