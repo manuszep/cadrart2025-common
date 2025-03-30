@@ -7,6 +7,7 @@ export interface ICadrartExtendedTask extends ICadrartApiEntity {
   taskDoneCount: number;
   parent: number | ICadrartExtendedTask;
   jobId: number;
+  jobTasks: ICadrartExtendedTask[];
   jobCount: number;
   jobOrientation: number;
   jobMeasure: number;
