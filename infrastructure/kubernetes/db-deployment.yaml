@@ -59,6 +59,13 @@ spec:
             - mountPath: /var/lib/mysql
               name: db-volume
               subPath: "mysql"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 999
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
       restartPolicy: Always
       volumes:
         - name: db-volume
