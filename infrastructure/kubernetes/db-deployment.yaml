@@ -16,7 +16,7 @@ spec:
   template:
     metadata:
       labels:
-        io.kompose.network/cadrart2024-default: 'true'
+        io.kompose.network/cadrart2024-default: "true"
         io.kompose.service: db
     spec:
       containers:
@@ -32,7 +32,7 @@ spec:
                   key: DATABASE_PASSWORD
                   name: cadrart-secret
             - name: MYSQL_ROOT_HOST
-              value: '%'
+              value: "localhost"
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -47,13 +47,12 @@ spec:
           name: db
           ports:
             - containerPort: 3306
-              hostPort: 3306
               protocol: TCP
           resources: {}
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: db-volume
-              subPath: 'mysql'
+              subPath: "mysql"
       restartPolicy: Always
       volumes:
         - name: db-volume

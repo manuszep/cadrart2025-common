@@ -45,13 +45,3 @@ spec:
                 name: backend
                 port:
                   number: 3000
-    - host: db.${DOMAIN_NAME}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: phpmyadmin-service
-                port:
-                  number: 80

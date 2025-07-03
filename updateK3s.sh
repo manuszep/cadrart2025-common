@@ -18,6 +18,10 @@ kubectl apply -f ./infrastructure/kubernetes/db-volume-persistentvolumeclaim.yam
 kubectl apply -f ./infrastructure/kubernetes/db-deployment.yaml
 kubectl apply -f ./infrastructure/kubernetes/db-service.yaml
 
+# Apply NetworkPolicies for security
+kubectl apply -f ./infrastructure/kubernetes/db-network-policy.yaml
+kubectl apply -f ./infrastructure/kubernetes/backend-network-policy.yaml
+
 # Use the new apply-ingress.sh script with environment variable substitution
 cd ./infrastructure/kubernetes
 ./apply-ingress.sh
