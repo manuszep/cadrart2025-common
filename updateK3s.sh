@@ -14,6 +14,8 @@ kubectl apply -f ./infrastructure/kubernetes/secrets.yaml
 
 kubectl apply -f ./infrastructure/kubernetes/static-volume-persistentvolumeclaim.yaml
 kubectl apply -f ./infrastructure/kubernetes/db-volume-persistentvolumeclaim.yaml
+kubectl apply -f ./infrastructure/kubernetes/logs-volume-persistentvolumeclaim.yaml
+kubectl apply -f ./infrastructure/kubernetes/prometheus-storage-persistentvolumeclaim.yaml
 
 kubectl apply -f ./infrastructure/kubernetes/db-deployment.yaml
 kubectl apply -f ./infrastructure/kubernetes/db-service.yaml
@@ -21,6 +23,11 @@ kubectl apply -f ./infrastructure/kubernetes/db-service.yaml
 # Apply NetworkPolicies for security
 kubectl apply -f ./infrastructure/kubernetes/db-network-policy.yaml
 kubectl apply -f ./infrastructure/kubernetes/backend-network-policy.yaml
+
+# Apply monitoring and logging components
+kubectl apply -f ./infrastructure/kubernetes/prometheus-auth-secret.yaml
+kubectl apply -f ./infrastructure/kubernetes/prometheus-exporter.yaml
+kubectl apply -f ./infrastructure/kubernetes/log-cleanup-cronjob.yaml
 
 # Use the new apply-ingress.sh script with environment variable substitution
 cd ./infrastructure/kubernetes

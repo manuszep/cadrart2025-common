@@ -10,6 +10,9 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "false"
+    nginx.ingress.kubernetes.io/auth-type: "basic"
+    nginx.ingress.kubernetes.io/auth-secret: "prometheus-auth"
+    nginx.ingress.kubernetes.io/auth-realm: "Prometheus Access"
 spec:
   ingressClassName: nginx
   tls:
@@ -48,3 +51,10 @@ spec:
                 name: backend
                 port:
                   number: 3000
+          - path: /metrics
+            pathType: Prefix
+            backend:
+              service:
+                name: cadrart-prometheus-service
+                port:
+                  number: 9090
