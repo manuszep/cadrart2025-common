@@ -11,10 +11,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - ateliercadrart.com
+        - ${DOMAIN_NAME}
       secretName: example-tls
   rules:
-    - host: ateliercadrart.com
+    - host: ${DOMAIN_NAME}
       http:
         paths:
           - path: /
@@ -45,7 +45,7 @@ spec:
                 name: backend
                 port:
                   number: 3000
-    - host: db.ateliercadrart.com
+    - host: db.${DOMAIN_NAME}
       http:
         paths:
           - path: /

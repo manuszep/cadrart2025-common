@@ -3,3 +3,4 @@ dist
 infrastructure/kubernetes/secrets.yaml
 infrastructure/kubernetes/github-actions-secret.yaml
 infrastructure/kubernetes/dockerconfigjson.yaml
+DEPLOYMENT.md
