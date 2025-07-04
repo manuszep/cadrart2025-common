@@ -19,7 +19,7 @@ spec:
         - name: phpmyadmin
           image: phpmyadmin/phpmyadmin
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           env:
             - name: PMA_HOST
               value: db
@@ -30,6 +30,8 @@ spec:
                 secretKeyRef:
                   key: DATABASE_ROOT_PASSWORD
                   name: cadrart-secret
+            - name: APACHE_PORT
+              value: "8080"
           resources:
             requests:
               cpu: "50m"
@@ -38,11 +40,5 @@ spec:
               cpu: "200m"
               memory: "256Mi"
           securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
-            runAsGroup: 1000
-            readOnlyRootFilesystem: true
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
+            runAsUser: 0
+            runAsGroup: 0
