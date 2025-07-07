@@ -10,12 +10,12 @@ if [ -z "$DOMAIN_NAME" ]; then
 fi
 
 # Create a temporary file with substituted values
-envsubst < ingress.yaml > ingress-substituted.yaml
+envsubst < ../kubernetes/ingress.yaml > ../kubernetes/ingress-substituted.yaml
 
 # Apply the configuration
-kubectl apply -f ingress-substituted.yaml
+kubectl apply -f ../kubernetes/ingress-substituted.yaml
 
 # Clean up
-rm ingress-substituted.yaml
+rm ../kubernetes/ingress-substituted.yaml
 
 echo "Ingress applied successfully for domain: $DOMAIN_NAME" 

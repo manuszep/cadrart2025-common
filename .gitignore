@@ -1,7 +1,7 @@
 node_modules
 dist
-infrastructure/kubernetes/secrets.yaml
-infrastructure/kubernetes/prometheus-auth-secret.yaml
-infrastructure/kubernetes/github-actions-secret.yaml
-infrastructure/kubernetes/dockerconfigjson.yaml
+infrastructure/kubernetes/config/secrets.yaml
+infrastructure/kubernetes/config/prometheus-auth-secret.yaml
+infrastructure/kubernetes/config/github-actions-secret.yaml
+infrastructure/kubernetes/config/dockerconfigjson.yaml
 DEPLOYMENT.md
