@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cadrart-system
+  labels:
+    name: cadrart-system
+    purpose: system-services
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cadrart-a
+  labels:
+    name: cadrart-a
+    purpose: production-environment
+    environment: a
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cadrart-b
+  labels:
+    name: cadrart-b
+    purpose: production-environment
+    environment: b

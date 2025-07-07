@@ -1,0 +1,66 @@
+name: Switch Environment
+on:
+  workflow_dispatch:
+
+permissions: write-all
+
+jobs:
+  switch:
+    name: Switch Production Environment
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Kubernetes set context
+        uses: Azure/k8s-set-context@v3
+        with:
+          method: service-account
+          k8s-url: ${{ secrets.KUBERNETES_URL }}
+          k8s-secret: ${{ secrets.KUBERNETES_SECRET }}
+
+      - name: Determine target environment
+        id: target-env
+        run: |
+          # Get current production namespace
+          CURRENT_PROD_NAMESPACE=$(kubectl get service frontend-production -n cadrart-system -o jsonpath='{.spec.externalName}' 2>/dev/null | sed 's/\.svc\.cluster\.local//' | sed 's/frontend\.//' || echo "cadrart-a")
+
+          # Determine target environment (opposite of current)
+          if [[ "$CURRENT_PROD_NAMESPACE" == "cadrart-a" ]]; then
+            TARGET_ENV="cadrart-b"
+          elif [[ "$CURRENT_PROD_NAMESPACE" == "cadrart-b" ]]; then
+            TARGET_ENV="cadrart-a"
+          else
+            echo "❌ Unknown current production namespace: $CURRENT_PROD_NAMESPACE"
+            exit 1
+          fi
+
+          echo "target-env=$TARGET_ENV" >> $GITHUB_OUTPUT
+          echo "current-prod=$CURRENT_PROD_NAMESPACE" >> $GITHUB_OUTPUT
+          echo "Current production: $CURRENT_PROD_NAMESPACE"
+          echo "Target production: $TARGET_ENV"
+
+      - name: Switch environment
+        run: |
+          cd infrastructure/scripts
+          chmod +x *.sh
+          ./switch-environment.sh ${{ steps.target-env.outputs.target-env }}
+
+      - name: Health check new production
+        run: |
+          cd infrastructure/scripts
+          ./health-check.sh ${{ steps.target-env.outputs.target-env }}
+
+      - name: Switch summary
+        run: |
+          echo "## 🚀 Environment Switch Complete!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Previous Production:** ${{ steps.target-env.outputs.current-prod }}" >> $GITHUB_STEP_SUMMARY
+          echo "**New Production:** ${{ steps.target-env.outputs.target-env }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Production URL:** https://ateliercadrart.com" >> $GITHUB_STEP_SUMMARY
+          echo "**Staging URL:** https://stg.ateliercadrart.com" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Steps:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Monitor the new production environment" >> $GITHUB_STEP_SUMMARY
+          echo "2. Verify all services are working correctly" >> $GITHUB_STEP_SUMMARY
+          echo "3. Update DNS if necessary" >> $GITHUB_STEP_SUMMARY

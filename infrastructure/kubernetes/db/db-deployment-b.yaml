@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  namespace: cadrart-b
+  labels:
+    app: db
+    environment: b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+      environment: b
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: db
+        environment: b
+    spec:
+      containers:
+        - name: db
+          image: mysql:8.0
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: DATABASE_DATABASE
+                  name: cadrart-config
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: DATABASE_PASSWORD
+                  name: cadrart-secret
+            - name: MYSQL_ROOT_HOST
+              value: "localhost"
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: DATABASE_ROOT_PASSWORD
+                  name: cadrart-secret
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: DATABASE_USER
+                  name: cadrart-secret
+          ports:
+            - containerPort: 3306
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: db-volume
+              subPath: "mysql"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 999
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+      restartPolicy: Always
+      volumes:
+        - name: db-volume
+          persistentVolumeClaim:
+            claimName: db-volume-b
