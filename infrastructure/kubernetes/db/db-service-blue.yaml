@@ -3,15 +3,15 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: db
-  name: db
+    io.kompose.service: db-blue
+  name: db-blue
   namespace: cadrart
 spec:
   ports:
-    - name: '3306'
+    - name: "3306"
       port: 3306
       targetPort: 3306
   selector:
-    io.kompose.service: db
+    io.kompose.service: db-blue
 status:
   loadBalancer: {}

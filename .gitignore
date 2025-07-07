@@ -5,3 +5,36 @@ infrastructure/kubernetes/config/prometheus-auth-secret.yaml
 infrastructure/kubernetes/config/github-actions-secret.yaml
 infrastructure/kubernetes/config/dockerconfigjson.yaml
 DEPLOYMENT.md
+
+# Kubernetes backup directories
+k8s-backup-*
+backup-*
+
+# Production backup directories
+production-data-backup-*
+static-files-backup-*
+infrastructure/.DS_Store
+infrastructure/scripts/.DS_Store
+infrastructure/scripts/backup-prod-database.sh
+infrastructure/scripts/backup-prod-database.sh
+
+# Additional security patterns
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.env
+*.env.*
+secrets/
+backups/
+backup-*/
+k8s-backup-*/
+production-data-backup-*/
+static-files-backup-*/
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db

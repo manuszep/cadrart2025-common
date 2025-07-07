@@ -6,7 +6,7 @@ metadata:
   annotations:
     ingressClassName: nginx
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/websocket-services: "backend"
+    nginx.ingress.kubernetes.io/websocket-services: "backend-proxy"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "false"
@@ -17,38 +17,38 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - ${DOMAIN_NAME}
+        - ateliercadrart.com
       secretName: example-tls
   rules:
-    - host: ${DOMAIN_NAME}
+    - host: ateliercadrart.com
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: frontend
+                name: frontend-proxy
                 port:
                   number: 8080
           - path: /ws
             pathType: Prefix
             backend:
               service:
-                name: backend
+                name: backend-proxy
                 port:
                   number: 8001
           - path: /api
             pathType: Prefix
             backend:
               service:
-                name: backend
+                name: backend-proxy
                 port:
                   number: 3000
           - path: /static
             pathType: Prefix
             backend:
               service:
-                name: backend
+                name: backend-proxy
                 port:
                   number: 3000
           - path: /metrics
@@ -58,3 +58,13 @@ spec:
                 name: cadrart-prometheus-service
                 port:
                   number: 9090
+    - host: db.ateliercadrart.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: phpmyadmin-service
+                port:
+                  number: 80

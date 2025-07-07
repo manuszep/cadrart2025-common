@@ -3,13 +3,14 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: db-volume
-  name: db-volume
+    io.kompose.service: db-volume-green
+  name: db-volume-green
   namespace: cadrart
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: linode-block-storage-retain
   resources:
     requests:
-      storage: 100Mi
+      storage: 10Gi
 status: {}

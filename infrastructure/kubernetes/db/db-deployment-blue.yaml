@@ -1,27 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: db
-  namespace: cadrart-a
+  name: db-blue
+  namespace: cadrart
   labels:
-    app: db
-    environment: a
+    io.kompose.service: db-blue
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: db
-      environment: a
+      io.kompose.service: db-blue
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: db
-        environment: a
+        io.kompose.service: db-blue
     spec:
       containers:
-        - name: db
+        - name: db-blue
           image: mysql:8.0
           env:
             - name: MYSQL_DATABASE
@@ -61,14 +58,10 @@ spec:
               name: db-volume
               subPath: "mysql"
           securityContext:
-            runAsNonRoot: true
-            runAsUser: 999
+            runAsNonRoot: false
             allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
       restartPolicy: Always
       volumes:
         - name: db-volume
           persistentVolumeClaim:
-            claimName: db-volume-a
+            claimName: db-volume-blue
