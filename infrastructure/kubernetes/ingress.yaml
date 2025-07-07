@@ -6,7 +6,7 @@ metadata:
   annotations:
     ingressClassName: nginx
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/websocket-services: "backend-proxy"
+    nginx.ingress.kubernetes.io/websocket-services: "backend-prod-proxy,backend-test-proxy"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "false"
@@ -15,6 +15,7 @@ spec:
   tls:
     - hosts:
         - ateliercadrart.com
+        - stg.ateliercadrart.com
       secretName: example-tls
   rules:
     - host: ateliercadrart.com
@@ -24,27 +25,58 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend-proxy
+                name: frontend-prod-proxy
                 port:
                   number: 8080
           - path: /ws
             pathType: Prefix
             backend:
               service:
-                name: backend-proxy
+                name: backend-prod-proxy
                 port:
                   number: 8001
           - path: /api
             pathType: Prefix
             backend:
               service:
-                name: backend-proxy
+                name: backend-prod-proxy
                 port:
                   number: 3000
           - path: /static
             pathType: Prefix
             backend:
               service:
-                name: backend-proxy
+                name: backend-prod-proxy
+                port:
+                  number: 3000
+    - host: stg.ateliercadrart.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-test-proxy
+                port:
+                  number: 8080
+          - path: /ws
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-test-proxy
+                port:
+                  number: 8001
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-test-proxy
+                port:
+                  number: 3000
+          - path: /static
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-test-proxy
                 port:
                   number: 3000

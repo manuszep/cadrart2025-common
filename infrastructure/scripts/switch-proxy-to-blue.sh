@@ -3,12 +3,20 @@
 # Switch proxy services to blue environment
 echo "Switching proxy services to blue environment..."
 
-# Update frontend proxy to point to blue
-kubectl patch service frontend-proxy -n cadrart --type='json' -p='[{"op": "replace", "path": "/spec/selector/app", "value": "frontend-blue"}]'
+# Update production proxy services to point to blue
+kubectl patch service frontend-prod-proxy -n cadrart --type='merge' -p='{"spec":{"selector":{"io.kompose.service":"frontend-blue"}}}'
+kubectl patch service backend-prod-proxy -n cadrart --type='merge' -p='{"spec":{"selector":{"io.kompose.service":"backend-blue"}}}'
 
-# Update backend proxy to point to blue
-kubectl patch service backend-proxy -n cadrart --type='json' -p='[{"op": "replace", "path": "/spec/selector/app", "value": "backend-blue"}]'
+# Update test proxy services to point to green
+kubectl patch service frontend-test-proxy -n cadrart --type='merge' -p='{"spec":{"selector":{"io.kompose.service":"frontend-green"}}}'
+kubectl patch service backend-test-proxy -n cadrart --type='merge' -p='{"spec":{"selector":{"io.kompose.service":"backend-green"}}}'
+
+# Update environment config to reflect blue is now production
+kubectl patch configmap environment-config -n cadrart --type='merge' -p='{"data":{"COLOR_PROD":"blue","COLOR_TEST":"green"}}'
 
 echo "Proxy services switched to blue environment"
 echo "Current proxy configuration:"
-kubectl get service frontend-proxy backend-proxy -n cadrart -o wide 
+kubectl get service frontend-prod-proxy backend-prod-proxy frontend-test-proxy backend-test-proxy -n cadrart -o wide
+echo ""
+echo "Environment configuration:"
+kubectl get configmap environment-config -n cadrart -o jsonpath='{.data.COLOR_PROD} {.data.COLOR_TEST}' 

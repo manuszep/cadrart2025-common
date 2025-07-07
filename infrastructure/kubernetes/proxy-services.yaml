@@ -35,3 +35,73 @@ spec:
       name: websocket
   selector:
     io.kompose.service: backend-blue
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-prod-proxy
+  namespace: cadrart
+  labels:
+    app: frontend-prod-proxy
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    io.kompose.service: frontend-blue
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-prod-proxy
+  namespace: cadrart
+  labels:
+    app: backend-prod-proxy
+spec:
+  type: ClusterIP
+  ports:
+    - name: api
+      port: 3000
+      targetPort: 3000
+    - name: websocket
+      port: 8001
+      targetPort: 8001
+  selector:
+    io.kompose.service: backend-blue
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-test-proxy
+  namespace: cadrart
+  labels:
+    app: frontend-test-proxy
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    io.kompose.service: frontend-green
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-test-proxy
+  namespace: cadrart
+  labels:
+    app: backend-test-proxy
+spec:
+  type: ClusterIP
+  ports:
+    - name: api
+      port: 3000
+      targetPort: 3000
+    - name: websocket
+      port: 8001
+      targetPort: 8001
+  selector:
+    io.kompose.service: backend-green
