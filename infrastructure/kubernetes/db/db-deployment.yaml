@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  namespace: cadrart
+  labels:
+    io.kompose.service: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: db
+    spec:
+      containers:
+        - name: db
+          image: mysql:8.0
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: DATABASE_DATABASE
+                  name: cadrart-config
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: DATABASE_PASSWORD
+                  name: cadrart-secret
+            - name: MYSQL_ROOT_HOST
+              value: "localhost"
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: DATABASE_ROOT_PASSWORD
+                  name: cadrart-secret
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: DATABASE_USER
+                  name: cadrart-secret
+          ports:
+            - containerPort: 3306
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "25m"
+              memory: "128Mi"
+            limits:
+              cpu: "100m"
+              memory: "512Mi"
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: db-volume
+              subPath: "mysql"
+          securityContext:
+            runAsNonRoot: false
+            allowPrivilegeEscalation: false
+      restartPolicy: Always
+      volumes:
+        - name: db-volume
+          persistentVolumeClaim:
+            claimName: db-volume
