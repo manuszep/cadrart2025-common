@@ -7,7 +7,7 @@ metadata:
     app: cadrart
     component: log-cleanup
 spec:
-  schedule: "0 2 * * *" # Run daily at 2 AM
+  schedule: "0 2 1 */2 *" # Run every 2 months on the 1st at 2 AM
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3

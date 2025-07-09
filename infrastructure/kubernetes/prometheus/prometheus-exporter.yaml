@@ -18,6 +18,17 @@ spec:
         app: cadrart
         component: monitoring
     spec:
+      initContainers:
+        - name: fix-permissions
+          image: alpine:3.19
+          command: ["sh", "-c", "chown -R 65534:65534 /prometheus"]
+          volumeMounts:
+            - name: prometheus-storage
+              mountPath: /prometheus
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: false
       containers:
         - name: prometheus-exporter
           image: prom/prometheus:latest
@@ -94,10 +105,16 @@ data:
       # - "second_rules.yml"
 
     scrape_configs:
-      - job_name: 'cadrart-backend'
+      - job_name: 'cadrart-backend-blue'
         static_configs:
-          - targets: ['backend:3000']
-        metrics_path: '/metrics/prometheus'
+          - targets: ['backend-blue:3000']
+        metrics_path: '/api/metrics/prometheus'
+        scrape_interval: 15s
+        
+      - job_name: 'cadrart-backend-green'
+        static_configs:
+          - targets: ['backend-green:3000']
+        metrics_path: '/api/metrics/prometheus'
         scrape_interval: 15s
         
       - job_name: 'prometheus'
