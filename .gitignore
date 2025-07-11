@@ -33,6 +33,9 @@ k8s-backup-*/
 production-data-backup-*/
 static-files-backup-*/
 
+# Database backup directory
+backup/
+
 # Temporary files
 *.tmp
 *.temp
