@@ -1,4 +1,5 @@
 import { ICadrartApiEntity } from "./base.entity";
+import { ECadrartOfferStatus } from "./offer.entity";
 
 export interface ICadrartExtendedTask extends ICadrartApiEntity {
   taskComment: string;
@@ -27,7 +28,7 @@ export interface ICadrartExtendedTask extends ICadrartApiEntity {
   articlePlace: string;
   articleFamily: number;
   offerId: number;
-  offerStatus: number;
+  offerStatus: ECadrartOfferStatus;
   assignedToId: number;
   assignedToFirstName: string;
   assignedToLastName: string;
