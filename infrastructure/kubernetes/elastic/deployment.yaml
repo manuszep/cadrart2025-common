@@ -16,11 +16,22 @@ spec:
     spec:
       containers:
         - name: elasticsearch
-          image: docker.elastic.co/elasticsearch/elasticsearch
+          image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
           imagePullPolicy: IfNotPresent
           env:
             - name: discovery.type
               value: single-node
+            - name: ELASTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: elasticsearch-secrets
+                  key: ELASTIC_PASSWORD
+            - name: xpack.security.enabled
+              value: "true"
+            - name: xpack.security.transport.ssl.enabled
+              value: "false"
+            - name: xpack.security.http.ssl.enabled
+              value: "false"
           ports:
             - containerPort: 9200
               name: http
@@ -33,11 +44,29 @@ spec:
               mountPath: /usr/share/elasticsearch/data
           resources:
             limits:
-              cpu: 500m
-              memory: 4Gi
+              cpu: 250m
+              memory: 512Mi
             requests:
-              cpu: 500m
-              memory: 4Gi
+              cpu: 250m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /_cluster/health
+              port: 9200
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /_cluster/health
+              port: 9200
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
       # Allow non-root user to access PersistentVolume
       securityContext:
         fsGroup: 1000

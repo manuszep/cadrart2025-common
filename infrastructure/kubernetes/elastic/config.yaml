@@ -16,8 +16,6 @@ data:
     bootstrap.memory_lock: true
     transport.host: 127.0.0.1
     xpack.license.self_generated.type: basic
-    # Enable xpack.security which is provided in basic subscription
-    xpack.security.enabled: true
     # Disable unused xpack features 
     xpack.monitoring.enabled: false
     xpack.graph.enabled: false
