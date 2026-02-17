@@ -27,6 +27,7 @@ export interface ICadrartExtendedTask extends ICadrartApiEntity {
   articleName: string;
   articlePlace: string;
   articleFamily: number;
+  articleOutOfStock: boolean;
   offerId: number;
   offerStatus: ECadrartOfferStatus;
   assignedToId: number;
